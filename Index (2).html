@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Click the Heart Game</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #ffe6e6;
+    }
+
+    h1 {
+      margin-top: 30px;
+      color: #cc0000;
+    }
+
+    #heart {
+      font-size: 40px;
+      position: absolute;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    #scoreboard {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+
+    #startBtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>💘 Click the Heart!</h1>
+  <div id="scoreboard">
+    Score: <span id="score">0</span> | Time Left: <span id="time">30</span>s
+  </div>
+  <button id="startBtn" onclick="startGame()">Start Game</button>
+  <div id="heart" style="display:none;">❤️</div>
+
+  <script>
+    let score = 0;
+    let timeLeft = 30;
+    let gameInterval;
+    let heart = document.getElementById("heart");
+
+    heart.addEventListener("click", () => {
+      score++;
+      document.getElementById("score").textContent = score;
+      moveHeart();
+    });
+
+    function moveHeart() {
+      const maxX = window.innerWidth - 50;
+      const maxY = window.innerHeight - 50;
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+      heart.style.left = randomX + "px";
+      heart.style.top = randomY + "px";
+      heart.style.display = "block";
+    }
+
+    function startGame() {
+      score = 0;
+      timeLeft = 30;
+      document.getElementById("score").textContent = score;
+      document.getElementById("time").textContent = timeLeft;
+      document.getElementById("startBtn").disabled = true;
+
+      moveHeart();
+
+      gameInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById("time").textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          clearInterval(gameInterval);
+          heart.style.display = "none";
+          alert("Time's up! Your score is: " + score);
+          document.getElementById("startBtn").disabled = false;
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
